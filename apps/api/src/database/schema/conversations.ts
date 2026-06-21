@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, varchar, decimal, integer, smallint, timestamptz, jsonb, index } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, text, varchar, decimal, integer, smallint, timestamp, jsonb, index } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { workspaces } from './workspaces';
 import { whatsappAccounts } from './whatsapp-accounts';
@@ -18,13 +18,13 @@ export const conversations = pgTable('conversations', {
   revenue: decimal('revenue', { precision: 12, scale: 2 }),
   currency: varchar('currency', { length: 3 }).default('USD'),
   messageCount: integer('message_count').default(1),
-  firstMessageAt: timestamptz('first_message_at').notNull(),
-  lastMessageAt: timestamptz('last_message_at'),
+  firstMessageAt: timestamp('first_message_at').notNull(),
+  lastMessageAt: timestamp('last_message_at'),
   leadScore: smallint('lead_score'),
   tags: text('tags').array().default([]),
   customFields: jsonb('custom_fields').default({}),
-  createdAt: timestamptz('created_at').defaultNow(),
-  updatedAt: timestamptz('updated_at').defaultNow(),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
 }, (table) => ({
   workspaceIdx: index('idx_conv_workspace').on(table.workspaceId, table.createdAt),
   statusIdx: index('idx_conv_status').on(table.workspaceId, table.status),

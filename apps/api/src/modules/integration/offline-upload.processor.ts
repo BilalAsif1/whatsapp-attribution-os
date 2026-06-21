@@ -3,7 +3,7 @@ import { Logger, Inject } from '@nestjs/common';
 import { Job } from 'bullmq';
 import { eq, and, inArray } from 'drizzle-orm';
 import { DRIZZLE, type DrizzleDB } from '@database/drizzle.module';
-import { attributionRecords, clicks, adConnections } from '@database/schema';
+import { attributionRecords, clicks, conversations, adConnections } from '@database/schema';
 import { GoogleAdsService } from './google-ads.service';
 
 interface OfflineUploadJobData {
@@ -31,7 +31,6 @@ export class OfflineUploadProcessor extends WorkerHost {
         eq(attributionRecords.uploadStatus, 'queued'),
         eq(attributionRecords.adPlatform, 'google_ads'),
       ),
-      with: { click: true, conversation: true },
     });
 
     if (pendingRecords.length === 0) {
@@ -55,18 +54,29 @@ export class OfflineUploadProcessor extends WorkerHost {
       return;
     }
 
-    const conversions = pendingRecords
-      .filter((r) => r.click?.gclid)
-      .map((r) => ({
-        gclid: r.click!.gclid!,
-        conversionValue: Number(r.conversation?.revenue ?? 0),
-        conversionTime: r.createdAt,
-      }));
+    const uploadData: Array<{ gclid: string; conversionValue: number; conversionTime: Date }> = [];
 
-    if (conversions.length > 0) {
-      await this.googleAdsService.uploadOfflineConversions(workspaceId, conversions);
+    for (const record of pendingRecords) {
+      const click = await this.db.query.clicks.findFirst({
+        where: eq(clicks.id, record.clickId),
+      });
+      if (!click?.gclid) continue;
+
+      const conversation = await this.db.query.conversations.findFirst({
+        where: eq(conversations.id, record.conversationId),
+      });
+
+      uploadData.push({
+        gclid: click.gclid,
+        conversionValue: Number(conversation?.revenue ?? 0),
+        conversionTime: new Date(),
+      });
     }
 
-    this.logger.log(`Uploaded ${conversions.length} conversions for workspace ${workspaceId}`);
+    if (uploadData.length > 0) {
+      await this.googleAdsService.uploadOfflineConversions(workspaceId, uploadData);
+    }
+
+    this.logger.log(`Uploaded ${uploadData.length} conversions for workspace ${workspaceId}`);
   }
 }

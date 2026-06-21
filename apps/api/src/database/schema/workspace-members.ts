@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, varchar, timestamptz, unique } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, text, varchar, timestamp, unique } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { workspaces } from './workspaces';
 
@@ -8,7 +8,7 @@ export const workspaceMembers = pgTable('workspace_members', {
   userId: text('user_id').notNull(),
   role: varchar('role', { length: 10 }).notNull().default('viewer'),
   invitedBy: text('invited_by'),
-  joinedAt: timestamptz('joined_at').defaultNow(),
+  joinedAt: timestamp('joined_at').defaultNow(),
 }, (table) => ({
   uniqueMember: unique().on(table.workspaceId, table.userId),
 }));

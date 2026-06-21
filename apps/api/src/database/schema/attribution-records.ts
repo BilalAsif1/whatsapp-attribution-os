@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, varchar, decimal, timestamptz, index } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, text, varchar, decimal, timestamp, index } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { conversations } from './conversations';
 
@@ -19,8 +19,8 @@ export const attributionRecords = pgTable('attribution_records', {
   currency: varchar('currency', { length: 3 }).default('USD'),
   uploadStatus: varchar('upload_status', { length: 20 }).default('pending'),
   uploadError: text('upload_error'),
-  uploadedAt: timestamptz('uploaded_at'),
-  attributedAt: timestamptz('attributed_at').defaultNow(),
+  uploadedAt: timestamp('uploaded_at'),
+  attributedAt: timestamp('attributed_at').defaultNow(),
 }, (table) => ({
   workspaceIdx: index('idx_attr_workspace').on(table.workspaceId, table.attributedAt),
   uploadIdx: index('idx_attr_upload').on(table.uploadStatus),

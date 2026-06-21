@@ -15,7 +15,7 @@ export default function ForgotPasswordPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    await authClient.forgetPassword({ email, redirectTo: '/reset-password' });
+    await (authClient as any).forgetPassword({ email, redirectTo: '/reset-password' });
     setSent(true);
     setLoading(false);
   }

@@ -2,5 +2,13 @@
   "buildCommand": "pnpm --filter @wao/shared build && pnpm --filter @wao/web build",
   "outputDirectory": "apps/web/.next",
   "installCommand": "pnpm install",
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "experimentalServices": {
+    "wao-api": {
+      "type": "web",
+      "routePrefix": "/",
+      "framework": "nextjs",
+      "buildCommand": "pnpm install && pnpm --filter @wao/shared build && pnpm --filter @wao/api build"
+    }
+  }
 }

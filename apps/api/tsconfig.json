@@ -9,6 +9,7 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "target": "ES2022",
+    "skipLibCheck": true,
     "outDir": "./dist",
     "baseUrl": "./",
     "paths": {

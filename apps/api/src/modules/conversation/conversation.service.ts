@@ -36,8 +36,11 @@ export class ConversationService {
   }
 
   async update(wsId: string, id: string, data: { status?: string; revenue?: number; currency?: string; tags?: string[] }) {
+    const { revenue, ...rest } = data;
+    const setData: Record<string, unknown> = { ...rest, updatedAt: new Date() };
+    if (revenue !== undefined) setData.revenue = String(revenue);
     const [updated] = await this.db.update(conversations)
-      .set({ ...data, updatedAt: new Date() })
+      .set(setData as any)
       .where(and(eq(conversations.id, id), eq(conversations.workspaceId, wsId)))
       .returning();
     if (!updated) throw new NotFoundException('Conversation not found');

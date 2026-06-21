@@ -154,9 +154,7 @@ export class WebhookService {
           conversationId: conversation.id,
           clickId: matchedClick.id,
           adPlatform: platform,
-          utmSource: matchedClick.utmSource,
-          utmMedium: matchedClick.utmMedium,
-          utmCampaign: matchedClick.utmCampaign,
+          campaignName: matchedClick.utmCampaign,
           attributionModel: 'last_touch',
           uploadStatus: matchedClick.gclid ? 'pending' : 'skipped',
         });

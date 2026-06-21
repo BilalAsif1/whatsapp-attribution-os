@@ -1,4 +1,4 @@
-import { pgTable, uuid, varchar, text, jsonb, timestamptz, integer } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, varchar, text, jsonb, timestamp, integer } from 'drizzle-orm/pg-core';
 import { relations, sql } from 'drizzle-orm';
 import { workspaceMembers } from './workspace-members';
 import { whatsappAccounts } from './whatsapp-accounts';
@@ -19,10 +19,10 @@ export const workspaces = pgTable('workspaces', {
   stripeSubscriptionId: text('stripe_subscription_id').unique(),
   subscriptionStatus: varchar('subscription_status', { length: 20 }).default('trialing'),
   plan: varchar('plan', { length: 20 }).default('starter'),
-  trialEndsAt: timestamptz('trial_ends_at').default(sql`NOW() + INTERVAL '14 days'`),
+  trialEndsAt: timestamp('trial_ends_at').default(sql`NOW() + INTERVAL '14 days'`),
   workspaceCountLimit: integer('workspace_count_limit').default(1),
-  createdAt: timestamptz('created_at').defaultNow(),
-  updatedAt: timestamptz('updated_at').defaultNow(),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
 });
 
 export const workspacesRelations = relations(workspaces, ({ many }) => ({

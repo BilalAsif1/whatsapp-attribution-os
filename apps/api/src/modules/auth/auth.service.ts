@@ -7,7 +7,7 @@ import { organization, twoFactor } from 'better-auth/plugins';
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
-  private readonly auth: ReturnType<typeof betterAuth>;
+  private readonly auth: any;
 
   constructor(private readonly configService: ConfigService) {
     this.auth = betterAuth({
@@ -49,7 +49,7 @@ export class AuthService {
     const webResponse = await this.auth.handler(new globalThis.Request(url, init));
 
     res.status(webResponse.status);
-    webResponse.headers.forEach((v, k) => res.setHeader(k, v));
+    webResponse.headers.forEach((v: string, k: string) => res.setHeader(k, v));
     const body = await webResponse.text();
     res.send(body);
   }

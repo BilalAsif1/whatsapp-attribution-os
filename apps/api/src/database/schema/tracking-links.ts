@@ -1,4 +1,4 @@
-import { pgTable, uuid, varchar, text, boolean, integer, timestamptz, index } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, varchar, text, boolean, integer, timestamp, index } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { workspaces } from './workspaces';
 
@@ -15,7 +15,7 @@ export const trackingLinks = pgTable('tracking_links', {
   utmTerm: varchar('utm_term', { length: 200 }),
   isActive: boolean('is_active').default(true),
   clickCount: integer('click_count').default(0),
-  createdAt: timestamptz('created_at').defaultNow(),
+  createdAt: timestamp('created_at').defaultNow(),
 }, (table) => ({
   workspaceIdx: index('idx_links_workspace').on(table.workspaceId),
   shortCodeIdx: index('idx_links_shortcode').on(table.shortCode),

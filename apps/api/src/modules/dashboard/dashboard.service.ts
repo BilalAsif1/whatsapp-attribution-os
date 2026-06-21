@@ -66,7 +66,7 @@ export class DashboardService {
 
     return {
       clicks: clickCount?.count ?? 0,
-      chats: Object.values(statusMap).reduce((a, b) => a + b, 0),
+      chats: Object.values(statusMap).reduce<number>((a, b) => a + (b as number), 0),
       qualified: (statusMap.qualified ?? 0) + (statusMap.proposal_sent ?? 0) + (statusMap.converted ?? 0),
       converted: statusMap.converted ?? 0,
     };

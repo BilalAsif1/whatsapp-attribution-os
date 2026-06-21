@@ -1,4 +1,4 @@
-import { pgTable, uuid, varchar, decimal, text, jsonb, timestamptz, index } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, varchar, decimal, text, jsonb, timestamp, index } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { conversations } from './conversations';
 
@@ -11,7 +11,7 @@ export const conversionEvents = pgTable('conversion_events', {
   currency: varchar('currency', { length: 3 }).default('USD'),
   metadata: jsonb('metadata').default({}),
   createdBy: text('created_by'),
-  createdAt: timestamptz('created_at').defaultNow(),
+  createdAt: timestamp('created_at').defaultNow(),
 }, (table) => ({
   conversationIdx: index('idx_events_conversation').on(table.conversationId),
   workspaceIdx: index('idx_events_workspace').on(table.workspaceId, table.createdAt),

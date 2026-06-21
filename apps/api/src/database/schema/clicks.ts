@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, varchar, boolean, timestamptz, index } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, text, varchar, boolean, timestamp, index } from 'drizzle-orm/pg-core';
 
 export const clicks = pgTable('clicks', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -23,8 +23,8 @@ export const clicks = pgTable('clicks', {
   referer: text('referer'),
   landingPage: text('landing_page'),
   matched: boolean('matched').default(false),
-  matchedAt: timestamptz('matched_at'),
-  clickedAt: timestamptz('clicked_at').defaultNow().notNull(),
+  matchedAt: timestamp('matched_at'),
+  clickedAt: timestamp('clicked_at').defaultNow().notNull(),
 }, (table) => ({
   uidIdx: index('idx_clicks_uid').on(table.uid),
   workspaceIdx: index('idx_clicks_workspace').on(table.workspaceId, table.clickedAt),

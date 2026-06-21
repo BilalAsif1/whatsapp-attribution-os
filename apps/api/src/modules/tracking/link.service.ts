@@ -1,6 +1,6 @@
 import { Injectable, Inject, NotFoundException, Logger } from '@nestjs/common';
 import { eq, and } from 'drizzle-orm';
-import { nanoid } from 'uuid';
+import { randomBytes } from 'crypto';
 import { DRIZZLE, type DrizzleDB } from '@database/drizzle.module';
 import { trackingLinks } from '@database/schema';
 import { CreateTrackingLinkDto, UpdateTrackingLinkDto } from './dto';

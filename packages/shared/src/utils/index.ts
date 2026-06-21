@@ -1,4 +1,5 @@
-import { UID_PREFIX, UID_LENGTH } from '../constants/index.js';
+import { createHash } from 'crypto';
+import { UID_PREFIX, UID_LENGTH } from '../constants';
 
 const CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
@@ -26,7 +27,6 @@ export function detectAdPlatform(clickIds: Record<string, string | undefined>): 
 }
 
 export function hashPhone(phone: string, salt: string): string {
-  const { createHash } = require('crypto') as typeof import('crypto');
   return createHash('sha256').update(`${phone}:${salt}`).digest('hex');
 }
 
