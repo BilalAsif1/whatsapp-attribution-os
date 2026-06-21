@@ -28,7 +28,7 @@
     "clean": "turbo run clean && rm -rf node_modules",
     "docker:up": "docker compose -f infra/docker/docker-compose.yml up -d",
     "docker:down": "docker compose -f infra/docker/docker-compose.yml down",
-    "prepare": "husky"
+    "prepare": "husky || true"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.1",
