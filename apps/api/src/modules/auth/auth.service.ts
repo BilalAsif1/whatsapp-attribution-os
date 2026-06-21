@@ -1,15 +1,20 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Request, Response } from 'express';
-import { betterAuth } from 'better-auth';
-import { organization, twoFactor } from 'better-auth/plugins';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const betterAuthLoader = require('../../../better-auth-loader.cjs');
 
 @Injectable()
-export class AuthService {
+export class AuthService implements OnModuleInit {
   private readonly logger = new Logger(AuthService.name);
-  private readonly auth: any;
+  private auth: any;
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(private readonly configService: ConfigService) {}
+
+  async onModuleInit() {
+    const { betterAuth, organization, twoFactor } = await betterAuthLoader.load();
+
     this.auth = betterAuth({
       database: { type: 'postgres', url: this.configService.getOrThrow('DATABASE_URL') },
       secret: this.configService.getOrThrow('BETTER_AUTH_SECRET'),

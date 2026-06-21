@@ -9,7 +9,7 @@ export class NotificationService {
   private readonly fromEmail: string;
 
   constructor(private readonly configService: ConfigService) {
-    this.resend = new Resend(this.configService.get('RESEND_API_KEY'));
+    this.resend = new Resend(this.configService.get('RESEND_API_KEY') || 're_dummy');
     this.fromEmail = this.configService.get('EMAIL_FROM', 'WAO <noreply@yourdomain.com>');
   }
 
