@@ -4,6 +4,7 @@ module.exports = {
   async load() {
     const betterAuth = await import('better-auth');
     const plugins = await import('better-auth/plugins');
-    return { betterAuth: betterAuth.betterAuth, ...plugins };
+    const { Pool } = require('pg');
+    return { betterAuth: betterAuth.betterAuth, Pool, ...plugins };
   }
 };

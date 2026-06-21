@@ -13,13 +13,19 @@ export class AuthService implements OnModuleInit {
   constructor(private readonly configService: ConfigService) {}
 
   async onModuleInit() {
-    const { betterAuth, organization, twoFactor } = await betterAuthLoader.load();
+    const { betterAuth, organization, twoFactor, Pool } = await betterAuthLoader.load();
 
+    const dbUrl = this.configService.getOrThrow('DATABASE_URL').replace(/&channel_binding=require/, '');
+    const pool = new Pool({
+      connectionString: dbUrl,
+      ssl: { rejectUnauthorized: false },
+      max: 3,
+    });
     this.auth = betterAuth({
-      database: { type: 'postgres', url: this.configService.getOrThrow('DATABASE_URL') },
+      database: pool,
       secret: this.configService.getOrThrow('BETTER_AUTH_SECRET'),
       baseURL: this.configService.getOrThrow('API_URL'),
-      basePath: '/api/auth',
+      basePath: '/api/v1/auth',
       emailAndPassword: { enabled: true, requireEmailVerification: false, minPasswordLength: 8 },
       socialProviders: {
         google: {

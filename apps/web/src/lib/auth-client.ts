@@ -3,6 +3,7 @@ import { organizationClient, twoFactorClient } from 'better-auth/client/plugins'
 
 export const authClient: any = createAuthClient({
   baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000',
+  basePath: '/api/v1/auth',
   plugins: [organizationClient(), twoFactorClient()],
 });
 
