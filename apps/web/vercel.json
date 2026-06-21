@@ -1,6 +1,5 @@
 {
-  "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
+  "installCommand": "npm install -g pnpm && cd ../.. && pnpm install",
   "buildCommand": "cd ../.. && pnpm --filter @wao/shared build && cd apps/web && npx next build",
-  "outputDirectory": ".next",
-  "framework": "nextjs"
+  "outputDirectory": ".next"
 }
