@@ -1,0 +1,37 @@
+services:
+  - type: web
+    name: wao-api
+    runtime: node
+    plan: free
+    buildCommand: pnpm install && pnpm --filter @wao/shared build && pnpm --filter @wao/api build
+    startCommand: node apps/api/dist/main.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "4000"
+      - key: DATABASE_URL
+        fromGroup: wao-secrets
+      - key: REDIS_URL
+        fromGroup: wao-secrets
+      - key: BETTER_AUTH_SECRET
+        fromGroup: wao-secrets
+      - key: WHATSAPP_VERIFY_TOKEN
+        fromGroup: wao-secrets
+      - key: WHATSAPP_APP_SECRET
+        fromGroup: wao-secrets
+      - key: STRIPE_SECRET_KEY
+        fromGroup: wao-secrets
+      - key: STRIPE_WEBHOOK_SECRET
+        fromGroup: wao-secrets
+      - key: RESEND_API_KEY
+        fromGroup: wao-secrets
+      - key: PHONE_HASH_SALT
+        fromGroup: wao-secrets
+      - key: ENCRYPTION_KEY
+        fromGroup: wao-secrets
+      - key: APP_URL
+        fromGroup: wao-secrets
+      - key: API_URL
+        fromGroup: wao-secrets
+    healthCheckPath: /api/v1/health

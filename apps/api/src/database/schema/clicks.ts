@@ -1,0 +1,32 @@
+import { pgTable, uuid, text, varchar, boolean, timestamptz, index } from 'drizzle-orm/pg-core';
+
+export const clicks = pgTable('clicks', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  workspaceId: uuid('workspace_id').notNull(),
+  trackingLinkId: uuid('tracking_link_id'),
+  uid: varchar('uid', { length: 20 }).notNull(),
+  gclid: text('gclid'),
+  fbclid: text('fbclid'),
+  ttclid: text('ttclid'),
+  msclkid: text('msclkid'),
+  liFatId: text('li_fat_id'),
+  utmSource: varchar('utm_source', { length: 100 }),
+  utmMedium: varchar('utm_medium', { length: 100 }),
+  utmCampaign: varchar('utm_campaign', { length: 200 }),
+  utmContent: varchar('utm_content', { length: 200 }),
+  utmTerm: varchar('utm_term', { length: 200 }),
+  ipHash: varchar('ip_hash', { length: 64 }),
+  userAgent: text('user_agent'),
+  country: varchar('country', { length: 2 }),
+  city: varchar('city', { length: 100 }),
+  deviceType: varchar('device_type', { length: 10 }),
+  referer: text('referer'),
+  landingPage: text('landing_page'),
+  matched: boolean('matched').default(false),
+  matchedAt: timestamptz('matched_at'),
+  clickedAt: timestamptz('clicked_at').defaultNow().notNull(),
+}, (table) => ({
+  uidIdx: index('idx_clicks_uid').on(table.uid),
+  workspaceIdx: index('idx_clicks_workspace').on(table.workspaceId, table.clickedAt),
+  gclidIdx: index('idx_clicks_gclid').on(table.gclid),
+}));
