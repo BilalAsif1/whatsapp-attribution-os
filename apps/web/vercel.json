@@ -1,5 +1,0 @@
-{
-  "installCommand": "npm install -g pnpm && cd ../.. && pnpm install",
-  "buildCommand": "cd ../.. && pnpm --filter @wao/shared build && cd apps/web && npx next build",
-  "outputDirectory": ".next"
-}
